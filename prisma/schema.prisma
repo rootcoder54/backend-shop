@@ -14,26 +14,26 @@ datasource db {
 }
 
 model User {
-  id           String         @id @default(uuid())
-  firstName    String?
-  lastName     String?
-  birthDate    DateTime?
-  address      String?
-  city         String?
-  postalCode   String?
-  country      String?
-  username     String?        @unique
-  email        String?        @unique
-  password     String?
-  telephone    String?
-  createdAt    DateTime       @default(now())
-  updatedAt    DateTime       @updatedAt
-  role         UserRole       @relation(fields: [roleId], references: [id])
-  roleId       String         @unique
-  shop         Shop           @relation(fields: [compteId], references: [id])
-  compteId     String
-  Notification Notification[]
-  Commande     Commande[]
+  id            String         @id @default(uuid())
+  firstName     String?
+  lastName      String?
+  birthDate     DateTime?
+  address       String?
+  city          String?
+  postalCode    String?
+  country       String?
+  username      String?        @unique
+  email         String?        @unique
+  password      String?
+  telephone     String?
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  role          UserRole       @relation(fields: [roleId], references: [id])
+  roleId        String         @unique
+  shop          Shop           @relation(fields: [shopId], references: [id])
+  shopId        String
+  notifications Notification[]
+  commandes     Commande[]
 }
 
 model UserRole {
@@ -72,7 +72,7 @@ model Shop {
   isActive     Boolean          @default(true)
   createdAt    DateTime         @default(now())
   updatedAt    DateTime         @updatedAt
-  user         User[]
+  users        User[]
   clients      Client[]
   commandes    Commande[]
   fournisseurs Fournisseur[]
@@ -82,17 +82,16 @@ model Shop {
 }
 
 model Client {
-  id         String    @id @default(uuid())
-  nom        String
-  email      String?
-  telephone  String?
-  adresse    String?
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @updatedAt
-  Commande   Commande? @relation(fields: [commandeId], references: [id])
-  commandeId String?
-  shop       Shop?     @relation(fields: [shopId], references: [id])
-  shopId     String?
+  id        String     @id @default(uuid())
+  nom       String
+  email     String?
+  telephone String?
+  adresse   String?
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  commandes Commande[]
+  shop      Shop?      @relation(fields: [shopId], references: [id])
+  shopId    String?
 }
 
 model Fournisseur {
@@ -118,13 +117,22 @@ model Produit {
   fournisseur   Fournisseur?     @relation(fields: [fournisseurId], references: [id])
   categorieId   String?
   categorie     Categorie?       @relation(fields: [categorieId], references: [id])
-  image         String?
+  images        Image[]
   commande      Commande[]
   mouvements    MouvementStock[]
   shop          Shop?            @relation(fields: [shopId], references: [id])
   shopId        String?
   createdAt     DateTime         @default(now())
   updatedAt     DateTime         @updatedAt
+}
+
+model Image {
+  id        String   @id @default(uuid())
+  url       String
+  produit   Produit? @relation(fields: [produitId], references: [id])
+  produitId String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Categorie {
