@@ -33,6 +33,7 @@ router.post('/register',async (req, res) => {
             lastName,
         },
     });
+    res.json({ message: 'Utilisateur créé avec succès', user });
 })
 
 module.exports = router;
